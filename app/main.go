@@ -16,9 +16,8 @@ func main() {
 	if err != nil {
 		fmt.Printf("Err: %v", err)
 		if exitError, ok := err.(*exec.ExitError); ok {
-			// The command didn't complete successfully
-			return exitError.ExitCode() // we return the exit code of the failed command
+			os.Exit(exitError.ExitCode()) 
 		}
 	}
-	os.Exit(0);
+	os.Exit(0)
 }
