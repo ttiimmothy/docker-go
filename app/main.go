@@ -5,18 +5,18 @@ import (
 	"os"
 	"os/exec"
 )
+
 func main() {
-	fmt.Println("Logs from your program will appear here!")
-	
 	command := os.Args[3]
 	args := os.Args[4:len(os.Args)]
-	
 	cmd := exec.Command(command, args...)
-	output, err := cmd.Output()
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
 	if err != nil {
 		fmt.Printf("Err: %v", err)
 		os.Exit(1)
+		fmt.Printf("Err: %v", err)
+		os.Exit(1)
 	}
-	
-	fmt.Println(string(output))
 }
