@@ -37,12 +37,9 @@ type Manifest struct {
 }
 
 const (
-	getTokenURL       = "https://auth.docker.io/token?service=registry.docker.io&scope=repository:library/%s:pull"
-	getManifestURL    = "https://registry.hub.docker.com/v2/library/%s/manifests/%s"
-	getLayerURL       = "https://registry.hub.docker.com/v2/library/%s/blobs/%s"
-	contentTypeHeader = "application/vnd.docker.distribution.manifest.v2+json"
-	imageFileName     = "image.tar"
-	tempDir           = "my-docker"
+	getTokenURL         = "https://auth.docker.io/token?service=registry.docker.io&scope=repository:library/%s:pull"
+	getImageManifestURL = "https://registry.hub.docker.com/v2/library/%s/manifests/%s"
+	pullDockerLayerURL  = "https://registry.hub.docker.com/v2/library/%s/blobs/%s"
 )
 
 func getAuthToken(imageName string) string {
@@ -52,7 +49,7 @@ func getAuthToken(imageName string) string {
 	}
 	defer res.Body.Close()
 	var docker_token TokenResponse
-	body, err := io.ReadAll(resp.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		fmt.Printf("getAuthToken(): ioutil.ReadAll error ", err)
 	}
@@ -88,7 +85,7 @@ func getImageManifest(token, imageName string) Manifest {
 	err = json.Unmarshal(body, &manifest)
 	if err != nil {
 		fmt.Printf("Err: %v", err)
-		os.Exit(1))
+		os.Exit(1)
 	}
 	defer res.Body.Close()
 	return manifest
@@ -119,7 +116,7 @@ func pullDockerLayer(imageName string, download_path string) {
 			fmt.Printf("Err: %v", err)
 			os.Exit(1)
 		}
-		_, err = io.Copy(file, resp.Body)
+		_, err = io.Copy(file, res.Body)
 		if err != nil {
 			fmt.Printf("Err: %v", err)
 			os.Exit(1)
@@ -128,11 +125,11 @@ func pullDockerLayer(imageName string, download_path string) {
 
 		cmd := exec.Command("tar", "-xf", layer_path, "-C", download_path)
 		if err := cmd.Run(); err != nil {
-			fmt.Printf(err)
+			fmt.Printf("Err: %v", err)
 			os.Exit(1)
 		}
 		if err = os.Remove(layer_path); err != nil {
-			fmt.Printf(err)
+			fmt.Printf("Err: %v", err)
 			os.Exit(1)
 		}
 	}
@@ -209,7 +206,7 @@ func main() {
 	cmd.SysProcAttr = &syscall.SysProcAttr{
 		Cloneflags: syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS,
 	}
-	err := cmd.Run()
+	err = cmd.Run()
 
 	if err != nil {
 		fmt.Printf("Err: %v", err)
