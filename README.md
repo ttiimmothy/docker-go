@@ -1,6 +1,6 @@
 [![progress-banner](https://backend.codecrafters.io/progress/docker/b0a97930-797c-4606-a9e2-f1ae6a3a4011)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
 
-# Docker Golang
+# Docker Go
 
 This is a starting point for Go solutions to the
 ["Build Your Own Docker" Challenge](https://codecrafters.io/challenges/docker).
@@ -54,4 +54,4 @@ mydocker run ubuntu:latest /usr/local/bin/docker-explorer echo hey
 
 ## License
 
-Docker Golang is licensed under [GNU General Public License v3.0](LICENSE).
+Docker Go is licensed under [GNU General Public License v3.0](LICENSE).
