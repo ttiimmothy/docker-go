@@ -1,3 +1,3 @@
-module github.com/codecrafters-io/docker-starter-go
+module example.com/mod
 
 go 1.21.4
